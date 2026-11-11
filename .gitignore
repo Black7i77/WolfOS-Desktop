@@ -1,0 +1,8 @@
+build-output/
+*.iso
+*.img
+*.qcow2
+*.squashfs
+*.part-*
+*.sha256
+*.log

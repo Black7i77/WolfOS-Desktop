@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=WolfOS appearance
+Exec=/usr/local/bin/wolfos-first-login
+Terminal=false
+NoDisplay=true
+X-KDE-autostart-phase=2

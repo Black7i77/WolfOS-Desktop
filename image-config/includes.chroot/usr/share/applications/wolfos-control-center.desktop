@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=WolfOS Control Center
+Comment=About WolfOS and open your apps
+Exec=/usr/local/bin/wolfos-control-center
+Type=Application
+Terminal=false
+Icon=wolfos
+Categories=System;Settings;

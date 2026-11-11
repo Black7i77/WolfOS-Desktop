@@ -1,0 +1,5 @@
+[Windows]
+Placement=Smart
+
+[Compositing]
+Enabled=true

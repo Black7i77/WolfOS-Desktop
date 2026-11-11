@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+"""WolfOS Control Center — native Qt app, not a simulated desktop."""
+import os
+import platform
+import subprocess
+import sys
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import (
+    QApplication, QFrame, QGridLayout, QHBoxLayout, QLabel,
+    QMainWindow, QPushButton, QScrollArea, QVBoxLayout, QWidget,
+)
+
+STYLE = """
+QWidget { background: #101827; color: #e9f3fc; font-family: 'Noto Sans'; font-size: 13px; }
+QLabel#eyebrow { color: #42dbc0; font-size: 12px; font-weight: 700; }
+QLabel#title { color: #f6fbff; font-size: 30px; font-weight: 700; }
+QLabel#subtitle { color: #9ab1c6; font-size: 13px; }
+QFrame#card { background: #18263a; border: 1px solid #284157; border-radius: 14px; }
+QLabel#card_title { color: #d6e9fb; font-size: 15px; font-weight: 700; background: transparent; }
+QLabel#card_body { color: #a9bfd3; background: transparent; }
+QPushButton { background: #1d394d; color: white; border: 1px solid #356374; border-radius: 9px; padding: 12px 15px; text-align: left; }
+QPushButton:hover { background: #176b74; border-color: #36d8b5; }
+QPushButton:pressed { background: #125a63; }
+"""
+
+def run(program):
+    try:
+        subprocess.Popen([program], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except FileNotFoundError:
+        pass
+
+
+def total_ram():
+    try:
+        with open('/proc/meminfo', encoding='utf-8') as handle:
+            for line in handle:
+                if line.startswith('MemTotal:'):
+                    kib = int(line.split()[1]); return f'{kib / 1048576:.1f} GiB'
+    except OSError:
+        pass
+    return 'Unknown'
+
+
+def make_card(title, body, program=None):
+    card = QFrame(); card.setObjectName('card')
+    layout = QVBoxLayout(card); layout.setContentsMargins(22, 18, 22, 20); layout.setSpacing(8)
+    h = QLabel(title); h.setObjectName('card_title'); layout.addWidget(h)
+    b = QLabel(body); b.setObjectName('card_body'); b.setWordWrap(True); layout.addWidget(b)
+    if program:
+        btn = QPushButton('Open ' + title + '   →')
+        btn.clicked.connect(lambda checked=False, p=program: run(p))
+        layout.addWidget(btn)
+    return card
+
+
+def main():
+    app = QApplication(sys.argv)
+    app.setStyleSheet(STYLE)
+    w = QMainWindow(); w.setWindowTitle('WolfOS — Control Center')
+    w.resize(960, 670)
+    central = QWidget(); w.setCentralWidget(central)
+    root = QVBoxLayout(central); root.setContentsMargins(36, 32, 36, 28); root.setSpacing(14)
+    eyebrow = QLabel('WOLF STUDIO  /  DESKTOP EDITION'); eyebrow.setObjectName('eyebrow')
+    title = QLabel('Welcome to WolfOS'); title.setObjectName('title')
+    subtitle = QLabel('A clean, modern Linux desktop — with the tools you need, and room to make it yours.')
+    subtitle.setObjectName('subtitle'); subtitle.setWordWrap(True)
+    root.addWidget(eyebrow); root.addWidget(title); root.addWidget(subtitle)
+    grid = QGridLayout(); grid.setSpacing(16)
+    grid.addWidget(make_card('Files', 'Browse folders, copy files and manage drives with Dolphin.', 'dolphin'), 0, 0)
+    grid.addWidget(make_card('Terminal', 'A real Linux terminal for programming and system commands.', 'konsole'), 0, 1)
+    grid.addWidget(make_card('Settings', 'Personalise displays, keyboard, audio, themes and accessibility.', 'systemsettings'), 1, 0)
+    grid.addWidget(make_card('Web Browser', 'Browse the web with Firefox. Network connectivity depends on your VM settings.', 'firefox-esr'), 1, 1)
+    grid.addWidget(make_card('System Monitor', 'See running applications, CPU, RAM and process information.', 'plasma-systemmonitor'), 2, 0)
+    grid.addWidget(make_card('Text Editor', 'Edit notes, scripts and source code in Kate.', 'kate'), 2, 1)
+    root.addLayout(grid)
+    info = QLabel(f'Linux {platform.release()}    •    Memory: {total_ram()}    •    KDE Plasma desktop')
+    info.setObjectName('subtitle'); root.addWidget(info)
+    root.addStretch(1)
+    w.show()
+    sys.exit(app.exec())
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=WolfOS Control Center
+Comment=System overview and shortcuts
+Exec=/usr/local/bin/wolfos-control-center
+Type=Application
+Terminal=false
+Icon=wolfos

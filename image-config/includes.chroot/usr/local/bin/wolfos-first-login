@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Applies WolfOS wallpaper once per live home. Does not overwrite user wallpaper choices.
+set -u
+STAMP="${HOME}/.config/wolfos-wallpaper-set"
+if [ -e "$STAMP" ]; then exit 0; fi
+if command -v plasma-apply-wallpaperimage >/dev/null 2>&1; then
+  plasma-apply-wallpaperimage /usr/share/wallpapers/WolfOS/contents/images/2560x1440.png >/dev/null 2>&1 || true
+fi
+mkdir -p "${HOME}/.config"
+touch "$STAMP"
