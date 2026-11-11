@@ -1,3 +1,7 @@
+# WolfOS Desktop v0.4 Alpha
+
+![WolfOS Wallpaper Preview](WALLPAPER_PREVIEW.png)
+
 # WolfOS Desktop v0.4 — Professional Linux desktop build
 
 This is a **new Linux-based WolfOS edition**, not the earlier scratch-built 32-bit kernel. The v0.1–v0.3 kernel project is untouched.
@@ -69,3 +73,15 @@ References:
 - Debian Live Manual: https://live-team.pages.debian.net/live-manual/html/live-manual.en.html
 - Debian KDE metapackage: https://packages.debian.org/trixie/kde-plasma-desktop
 - Debian SDDM documentation: https://wiki.debian.org/SDDM
+
+
+## Licensing
+
+Original WolfOS scripts and configurations are released
+under the MIT License. See [LICENSE](LICENSE).
+
+Debian, KDE Plasma and other third-party components
+retain their respective licences.
+
+The wallpaper above is a design preview, not a
+screenshot of the running operating system.
